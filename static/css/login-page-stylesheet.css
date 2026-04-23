@@ -1,0 +1,50 @@
+main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 80px);
+}section{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 2px 2px 20px 4px gray;
+    padding: 40px;
+    border-radius: 10px;
+    width: 80%;
+}#GoogleLoginBtn{
+    display: inline-flex;
+    gap: 10px;
+}svg{
+    display: block;
+}input{
+    color: black;
+    border: none;
+    border-bottom: 1.6px solid var(--primary-color);
+    margin: 10px 0px 20px 0px;
+    height: 25px;
+    width: calc(100% - 100px);
+    font-size: larger;
+    outline: none;
+}p{
+    color: grey;
+    margin: 10px 0;
+}.headline{
+    color: var(--complementary-color);
+    margin: 10px 0px;
+}h2{
+    color: var(--primary-color);
+    width: 100%;
+    font-size: large;
+}.userProfilePicture{
+    border: 2px solid black;
+    border-radius: 20px;
+    width: 275px;
+    height: 275px;
+    object-fit: cover;
+}div{
+    width: 100%;
+    display: flex;
+    gap: 20px;
+}form{
+    width: 100%;
+}

@@ -1,0 +1,62 @@
+body{
+        background-image: linear-gradient(360deg, var(--primary-color), var(--secondary-color));
+    padding-bottom: 5vh;
+}
+
+
+header{
+    display: flex;
+    padding: 0 50px;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}header div img{
+    width: 400px;
+    animation: rotateLaunchImage 5s ease-in-out forwards infinite;
+}header div p{
+    width: 750px;
+    padding: 8px 0;
+}
+
+
+section{
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}section article{
+    background-color: white;
+    max-width: 350px;
+    border-radius: 10px;
+    padding: 20px;
+}section article h2, section article p{
+    color: var(--primary-color);
+}
+
+
+
+
+
+
+@keyframes rotateLaunchImage{
+    0%{
+        rotate: y 0deg;
+    }50%{
+        rotate: y 180deg;
+    }100%{
+        rotate: y 0deg;
+    }
+}
+
+
+@media screen and (max-width: 786px) {
+    header div p{
+    width: 100%;
+    }header:first-child{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }header div img{
+    width: 100%;
+    }
+}

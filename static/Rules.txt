@@ -1,0 +1,15 @@
+Foreground and Logo Color: #0077B5
+Background Color: #240047
+Complementary Color: #b53e00
+
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;0,700;1,700&family=Montserrat:wght@100..900&display=swap');
+
+.ibm-plex-serif-regular
+.ibm-plex-serif-medium 
+.ibm-plex-serif-semibold 
+.ibm-plex-serif-bold
+.ibm-plex-serif-bold-italic
+.montserrat-<uniquifier>
+
+.\venv\Scripts\activate

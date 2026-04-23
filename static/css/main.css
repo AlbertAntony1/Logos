@@ -1,0 +1,72 @@
+@font-face {
+    font-family: 'mainFont';
+    src: url('../Resources/Fonts/Montserrat/Montserrat-VariableFont_wght.ttf') format('truetype');
+}@font-face {
+    font-family: 'secondFont';
+    src: url('../Resources/Fonts/IBM_Plex_Serif/IBMPlexSerif-Regular.ttf') format('truetype');
+}
+:root {
+  --primary-color: #0077B5; /* Global variable */
+  --secondary-color: #240047;
+  --complementary-color: #ff6c00;
+}* {
+    font-family: 'mainFont', sans-serif;
+    color: white;
+    padding: 0px;
+    margin: 0px;
+    letter-spacing: 0.8px;
+}.logo-text{
+    letter-spacing: 2.5px;
+    color: var(--primary-color);
+    font-size: 26px;
+}button{
+    max-width: 750px;
+    border-radius: 10px;
+    padding: 10px;
+    font-weight: bolder;
+    font-size: large;
+    color: var(--complementary-color);
+    border: 2px solid var(--complementary-color);
+    background-color: transparent;
+}a{
+    text-decoration: none;
+    color: white;
+    font-style: normal;
+}.headline{
+    font-weight: bolder;
+}label{
+    font-size: larger;
+    margin: 10px 0px;
+    font-weight: bolder;
+    color: var(--primary-color);
+}
+
+
+nav, nav div{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}nav div img{
+    width: 80px;
+}.menu{
+    justify-content: end;
+    padding: 0 20px;
+}
+
+
+
+button:hover{
+    background-color: var(--complementary-color);
+    color: white;
+}a:hover{
+    font-size: large;
+}
+
+
+
+@media screen and (max-width: 786px) {
+    .menu{
+        display: none;
+    }
+}

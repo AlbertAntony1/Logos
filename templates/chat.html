@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logos - Chat</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat-page-stylesheet.css') }}">
+</head>
+<body>
+    <nav style="background-color: var(--secondary-color);">
+        <div  onclick="location.href='/'">
+            <img src="{{ url_for('static', filename='Resources/Images/Logos/Logo.png')}}" alt="Logo">
+            <h3 class="logo-text">Logos</h3>
+        </div>
+        <div class="menu">
+            <a href="/home">Home</a>
+            <a href="/chat">Chat</a>
+            <a href="/about">About</a>
+            <a href="/contact">Contact</a>
+            <a href="/profile">Profile</a>
+        </div>
+    </nav> 
+
+    <main>
+        <ul>
+            <li>
+                <div>
+                    <img src="{{ url_for('static', filename='Resources/Images/Logos/Logo-Name-Background.png')}}" alt="">
+                </div>
+                <div>
+                    <h4 class="headline">Username</h4>
+                    <h5>user@123</h5>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro, possimus.</p>
+                </div>
+            </li>
+        </ul>
+    </main>
+
+
+
+    <section>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" ><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg>
+        <input class="messageBox" type="text" name="message" placeholder="Message...">
+        <svg class="sendBtn" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M120-160v-640l760 320-760 320Zm80-120 474-200-474-200v140l240 60-240 60v140Zm0 0v-400 400Z"/></svg>
+
+    </section>
+
+
+
+
+
+
+
+
+    <script src="{{url_for('static', filename='js/script.js')}}"></script>
+
+
+</body>
+</html>
