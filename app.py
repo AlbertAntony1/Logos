@@ -15,11 +15,7 @@ app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = os.getenv("MAIL_USERNAME")
 app.config['MAIL_PASSWORD'] = os.getenv("MAIL_PASSWORD")
-mail = Mail(app)
-
-session['userId']= ''
-session['userName'] = ''
-session['userProfilePicture'] = ''
+mail = Mail(app) 
 
 
 # Database Handling
@@ -54,7 +50,7 @@ def getData():
 @app.route('/messageSend', methods=[ 'POST'])
 def messageSend():
     messageDetails = request.json
-    insertData(session['userId'], session['userName'], session['userProfilePicture'], messageDetails['messageId'], messageDetails['message'], messageDetails['date'])
+    insertData(session.get('userId'), session.get('userName'), session.get('userProfilePicture'), messageDetails['messageId'], messageDetails['message'], messageDetails['date'])
     return jsonify({'result' : 'Message Successfully Sended'})
 @app.route('/messageReceive', methods=['POST'])
 def messageReceive():
@@ -97,8 +93,8 @@ def callback():
     token_response = requests.post(token_url, data=data).json()
     access_token = token_response.get('access_token')
     users_data = requests.get("https://www.googleapis.com/oauth2/v1/userinfo", params={'access_token': access_token}).json()
-    session['userId'] = users_data['email']
-    session['userName'] = users_data['name']
+    session['userId'] = users_data.get('email')
+    session['userName'] = users_data.get('name')
     session['userProfilePicture'] = users_data['picture']
     return redirect('/chat')
 @app.route('/login/otp', methods=['POST'])
@@ -119,7 +115,7 @@ def emailVerification():
 @app.route('/login/otp/validate', methods=['POST'])
 def otpVerification():
     if (session['otp'] == str(request.json.get('otp'))):
-        session['userId'] = session['email']
+        session['userId'] = session.get('email')
         session['userName'] = request.json.get('name')
         session['userProfilePicture'] = 'https://www.shutterstock.com/search/funny-profile-picture?image_type=vector'
         return {'data' : True}
@@ -129,7 +125,7 @@ def otpVerification():
 def userProfilePictureChange():
     file = request.files['file']
     session['userProfilePicture'] = f"./static/Resources/Images/Uploads/{str(random.randint(100000, 999999))}{file.filename}"
-    file.save(session['userProfilePicture'])
+    file.save(session.get('userProfilePicture'))
     return 'success'
 
 @app.route('/userIdChange', methods=['POST'])
@@ -149,7 +145,7 @@ def launchPage():
 
 @app.route('/chat')
 def homePage():
-    if session['userId'] == '':
+    if session.get('userId') is None:
         return redirect('/login')
     else:
         createTable()
@@ -159,7 +155,7 @@ def loginPage():
     return render_template('login.html')
 @app.route('/profile')
 def ProfilePage():
-    if session['userId'] == '':
+    if session.get('userId') is None:
         return redirect('/login')
     else:
         return render_template('profile.html', username=session['userName'], userId=session['userId'], picture=session['userProfilePicture'])
