@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify, redirect, session
-import sqlite3, requests, random
+import psycopg2, requests, random
 from flask_mail import Mail, Message
 from dotenv import load_dotenv
 import os
@@ -10,6 +10,7 @@ app.secret_key = os.getenv("SECRET_KEY")
 CLIENT_ID = os.getenv("CLIENT_ID")
 CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 REDIRECT_URI = "https://logos-messaging-platform.onrender.com/callback"
+DATABASE_URL = os.getenv("DATABASE_URL")
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
@@ -20,7 +21,7 @@ mail = Mail(app)
 
 # Database Handling
 def createTable():
-    conn = sqlite3.connect('database.db')
+    conn = psycopg2.connect(DATABASE_URL)
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS messages(
               userId TEXT,
@@ -32,13 +33,13 @@ def createTable():
     conn.commit()
     conn.close()
 def insertData(userId, userName, userProfilePicture, messageId, message, date):
-    conn = sqlite3.connect('database.db')
+    conn = psycopg2.connect(DATABASE_URL)
     c = conn.cursor()
     c.execute('''INSERT INTO messages (userId, userName, userProfilePicture , messageId, message, date) VALUES (?, ?, ?, ?, ?, ?)''', (userId, userName, userProfilePicture,  messageId, message, date))
     conn.commit()
     conn.close()
 def getData():
-    conn = sqlite3.connect('database.db')
+    conn = psycopg2.connect('database.db')
     c = conn.cursor()
     c.execute('''SELECT * FROM messages ORDER BY messageId ASC''')
     row = c.fetchall()
