@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
 CLIENT_ID = os.getenv("CLIENT_ID")
 CLIENT_SECRET = os.getenv("CLIENT_SECRET")
-REDIRECT_URI = "http://localhost:5000/callback"
+REDIRECT_URI = "https://logos-messaging-platform.onrender.com/callback"
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
@@ -17,9 +17,9 @@ app.config['MAIL_USERNAME'] = os.getenv("MAIL_USERNAME")
 app.config['MAIL_PASSWORD'] = os.getenv("MAIL_PASSWORD")
 mail = Mail(app)
 
-userId= ''
-userName = ''
-userProfilePicture = ''
+session['userId']= ''
+session['userName'] = ''
+session['userProfilePicture'] = ''
 
 
 # Database Handling
@@ -54,7 +54,7 @@ def getData():
 @app.route('/messageSend', methods=[ 'POST'])
 def messageSend():
     messageDetails = request.json
-    insertData(userId, userName, userProfilePicture, messageDetails['messageId'], messageDetails['message'], messageDetails['date'])
+    insertData(session['userId'], session['userName'], session['userProfilePicture'], messageDetails['messageId'], messageDetails['message'], messageDetails['date'])
     return jsonify({'result' : 'Message Successfully Sended'})
 @app.route('/messageReceive', methods=['POST'])
 def messageReceive():
@@ -84,7 +84,6 @@ def googleLogin ():
     return {'data': request_url}
 @app.route('/callback')
 def callback():
-    global userId, userName, userProfilePicture
     code = request.args.get("code")
     token_url = "https://oauth2.googleapis.com/token"
     data={
@@ -98,10 +97,9 @@ def callback():
     token_response = requests.post(token_url, data=data).json()
     access_token = token_response.get('access_token')
     users_data = requests.get("https://www.googleapis.com/oauth2/v1/userinfo", params={'access_token': access_token}).json()
-    userId = users_data['email']
-    userName = users_data['name']
-    userProfilePicture = users_data['picture']
-    print(userProfilePicture)
+    session['userId'] = users_data['email']
+    session['userName'] = users_data['name']
+    session['userProfilePicture'] = users_data['picture']
     return redirect('/chat')
 @app.route('/login/otp', methods=['POST'])
 def emailVerification():
@@ -120,31 +118,27 @@ def emailVerification():
     return {'data': 'OTP Successfully Send'}
 @app.route('/login/otp/validate', methods=['POST'])
 def otpVerification():
-    global userId, userName, userProfilePicture
     if (session['otp'] == str(request.json.get('otp'))):
-        userId = session['email']
-        userName = request.json.get('name')
-        userProfilePicture = 'https://www.shutterstock.com/search/funny-profile-picture?image_type=vector'
+        session['userId'] = session['email']
+        session['userName'] = request.json.get('name')
+        session['userProfilePicture'] = 'https://www.shutterstock.com/search/funny-profile-picture?image_type=vector'
         return {'data' : True}
     else:
         return {'data': False}
 @app.route('/userProfilePictureChange', methods=['POST'])
 def userProfilePictureChange():
-    global userProfilePicture
     file = request.files['file']
-    userProfilePicture = f"./static/Resources/Images/Uploads/{str(random.randint(100000, 999999))}{file.filename}"
-    file.save(userProfilePicture)
+    session['userProfilePicture'] = f"./static/Resources/Images/Uploads/{str(random.randint(100000, 999999))}{file.filename}"
+    file.save(session['userProfilePicture'])
     return 'success'
 
 @app.route('/userIdChange', methods=['POST'])
 def userIdChange():
-    global userId
-    userId = request.json.get('data')
+    session['userId'] = request.json.get('data')
     return 'success'
 @app.route('/userNameChange', methods=['POST'])
 def userNameChange():
-    global userName
-    userName = request.json.get('data')
+    session['userName'] = request.json.get('data')
     return 'success'
 
 # Routes
@@ -155,7 +149,7 @@ def launchPage():
 
 @app.route('/chat')
 def homePage():
-    if userId == '':
+    if session['userId'] == '':
         return redirect('/login')
     else:
         createTable()
@@ -165,10 +159,10 @@ def loginPage():
     return render_template('login.html')
 @app.route('/profile')
 def ProfilePage():
-    if userId == '':
+    if session['userId'] == '':
         return redirect('/login')
     else:
-        return render_template('profile.html', username=userName, userId=userId, picture=userProfilePicture)
+        return render_template('profile.html', username=session['userName'], userId=session['userId'], picture=session['userProfilePicture'])
 @app.route('/about')
 def aboutPage():
     return render_template('about.html')
@@ -177,11 +171,7 @@ def contactPage():
     return render_template('contact.html')
 @app.route('/logout')
 def logout():
-    global userProfilePicture, userId, userName
     session.clear()
-    userProfilePicture = ''
-    userId = '' 
-    userName = ''
     return redirect('/')
 
 
